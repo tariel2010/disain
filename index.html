@@ -1,7 +1,276 @@
-<div class="ai-design-container">
-    <canvas id="design-canvas"></canvas>
-    <div class="controls">
-        <input type="text" placeholder="Опишите идею..." />
-        <button onclick="generateDesign()">Создать</button>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Крутой сайт</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Основные стили */
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #2D2D2D;
+            --accent-color: #FFD369;
+            --text-color: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 200vh;
+            scroll-behavior: smooth;
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+        }
+
+        /* Навигация */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-color);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Секция Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://picsum.photos/1920/1080') center/cover;
+            filter: blur(10px);
+            mix-blend-mode: overlay;
+            animation: bg-move 15s infinite linear;
+        }
+
+        @keyframes bg-move {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-20%); }
+        }
+
+        .hero-content {
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            color: var(--text-color);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin: 20px 0;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        /* Анимации */
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Секция Услуг */
+        .services {
+            padding: 100px 5%;
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            position: relative;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+        }
+
+        /* Секция Портфолио */
+        .portfolio {
+            padding: 100px 5%;
+            background: var(--secondary-color);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Футер */
+        footer {
+            background: var(--primary-color);
+            padding: 50px;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-links { flex-direction: column; }
+            .hero-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <header>
+        <div class="nav-links">
+            <a href="#hero" class="nav-link">Главная</a>
+            <a href="#services" class="nav-link">Услуги</a>
+            <a href="#portfolio" class="nav-link">Портфолио</a>
+            <a href="#contact" class="nav-link">Контакты</a>
+        </div>
+    </header>
+
+    <!-- Секция Hero -->
+    <section id="hero" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Крутой сайт</h1>
+            <p class="hero-subtitle">Созданный с любовью и анимациями</p>
+        </div>
+    </section>
+
+    <!-- Секция Услуг -->
+    <section id="services" class="services">
+        <h2>Наши услуги</h2>
+        <div class="service-cards">
+            <div class="service-card">
+                <i class="fas fa-code service-icon"></i>
+                <h3>Разработка</h3>
+                <p>Современные веб-решения</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-paint-brush service-icon"></i>
+                <h3>Дизайн</h3>
+                <p>Креативные визуальные решения</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция Портфолио -->
+    <section id="portfolio" class="portfolio">
+        <h2>Портфолио</h2>
+        <div class="projects">
+            <div class="project-card">
+                <img src="https://picsum.photos/300/200" alt="Проект 1">
+            </div>
+            <div class="project-card">
+                <img src="https://picsum.photos/300/201" alt="Проект 2">
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <p>© 2024 Крутой сайт. Все права защищены.</p>
+    </footer>
+
+    <!-- Иконки Font Awesome -->
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+
+    <!-- Скрипты -->
+    <script>
+        // Анимация прокрутки
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Анимация появления элементов при скролле
+        window.addEventListener('scroll', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(reveal => {
+                const { top } = reveal.getBoundingClientRect();
+                if (top < window.innerHeight * 0.7) {
+                    reveal.style.animation = 'fadeInDown 1s ease-out';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
